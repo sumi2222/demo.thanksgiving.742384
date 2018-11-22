@@ -11,11 +11,10 @@ import com.demo.thanksgiving4.demo.thanksgiving4.controller.CharacterController;
 import com.demo.thanksgiving4.demo.thanksgiving4.entity.Character;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
+@Service
 public class BuildCharacterEntityHelper {
 
     private static Logger LOGGER = LoggerFactory.getLogger(CharacterController.class);
@@ -57,9 +56,9 @@ public class BuildCharacterEntityHelper {
             character.setCharacterCha(intArrayList.get(6));
             character.setCharacterInt(intArrayList.get(index++));
             character.setCharacterDex(intArrayList.get(index++));
-        } else
+        } /*else
             return (Character) ResponseEntity.status(Integer.
-                    parseInt(HttpStatus.EXPECTATION_FAILED.getReasonPhrase().concat(" ########  Un-Identifed Character Type  ######### ")));
+                    parseInt(HttpStatus.EXPECTATION_FAILED.getReasonPhrase().concat(" ########  Un-Identifed Character Type  ######### ")));*/
 
         character.setCharacterCon(intArrayList.get(index++));
         character.setCharacterWis(intArrayList.get(index++));

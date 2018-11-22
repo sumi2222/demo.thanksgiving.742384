@@ -5,19 +5,17 @@ import com.demo.thanksgiving4.demo.thanksgiving4.service.CharacterService;
 import com.demo.thanksgiving4.demo.thanksgiving4.utility.Character_enum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/character/gen")
-public class CharacterController {
+public class InventoryController {
+
 
     private static Logger LOGGER = LoggerFactory.getLogger(CharacterController.class);
 
     public final CharacterService characterService;
 
-    public CharacterController(CharacterService characterService) {
+    public InventoryController(CharacterService characterService) {
         this.characterService = characterService;
     }
 
@@ -59,9 +57,5 @@ public class CharacterController {
     @DeleteMapping("/deleteCharacter/{characterId}")
     public void deleteCharacter(@PathVariable("characterId") Long characterId) {
         this.characterService.deleteById(characterId);
-    }
-
-    @ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "CharacterType cannot be other than WARRIOR or WIZARD or ROGUE or ARCHER")
-    public class WrongCharacterTypeException extends Exception {
     }
 }

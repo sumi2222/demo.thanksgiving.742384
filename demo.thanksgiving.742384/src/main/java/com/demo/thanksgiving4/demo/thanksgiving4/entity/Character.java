@@ -1,9 +1,11 @@
 package com.demo.thanksgiving4.demo.thanksgiving4.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -53,16 +55,17 @@ public class Character implements Serializable{
     @Column(name="CHARACTER_HITPOINTS")
     private Integer characterHitpoints;
 
-    //@JsonIgnore
-    @Fetch(FetchMode.JOIN)
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="ITEM_INNER TABLE", joinColumns={@JoinColumn(name="CHARACTER_ID", referencedColumnName="CHARACTER_ID")}
-            , inverseJoinColumns={@JoinColumn(name="ITEM_ID", referencedColumnName="ITEM_ID")})
-    private Collection<Item> items;
+   @OneToMany(mappedBy = "character", targetEntity= Item.class, cascade = CascadeType.ALL)
 
-    public Long getCharacterId() {
-        return characterId;
-    }
+    @Column(name="CHARACTER_INVENTORY")
+    private List<Item> itemInventory = new ArrayList<>();
+
+
+    public List<Item> getItemInventory() { return itemInventory; }
+
+    public void setItemInventory(List<Item> itemInventory) { this.itemInventory = itemInventory; }
+
+    public Long getCharacterId() { return characterId; }
 
     public void setCharacterId(Long characterId) {
         this.characterId = characterId;
@@ -149,13 +152,6 @@ public class Character implements Serializable{
         this.characterHitpoints = characterHitpoints;
     }
 
-    public Collection<Item> getCharacterInventory() {
-        return items;
-    }
-
-    public void setCharacterInventory(Collection<Item> characterInventory) {
-        this.items = characterInventory;
-    }
 
     @Override
     public String toString() {
@@ -171,7 +167,7 @@ public class Character implements Serializable{
             ", characterCon=" + characterCon +
             ", characterLocation=" + characterLocation +
             ", characterHitpoints=" + characterHitpoints +
-            ", characterInventory=" + items +
+            ", characterInventory=" + itemInventory +
             '}';
     }
 

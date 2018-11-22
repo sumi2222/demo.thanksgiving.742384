@@ -1,8 +1,11 @@
 package com.demo.thanksgiving4.demo.thanksgiving4.utility;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+@Service
 public class RandomNumGen {
 
     private static final int MIN_RANGE = 8;
