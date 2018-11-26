@@ -2,11 +2,8 @@ package com.demo.thanksgiving4.demo.thanksgiving4.controller;
 
 import com.demo.thanksgiving4.demo.thanksgiving4.entity.Character;
 import com.demo.thanksgiving4.demo.thanksgiving4.service.CharacterService;
-import com.demo.thanksgiving4.demo.thanksgiving4.utility.Character_enum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 public class CharacterController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(CharacterController.class);
-
     public final CharacterService characterService;
 
     public CharacterController(CharacterService characterService) {
@@ -22,7 +18,9 @@ public class CharacterController {
     }
 
     @GetMapping("/getCharacters")
-    public Iterable<Character> getAllCharacters() { return this.characterService.getAllCharacters(); }
+    public Iterable<Character> getAllCharacters() {
+        return this.characterService.getAllCharacters();
+    }
 
     @GetMapping("/getCharacters/{characterId}")
     public Character getCharacterById(@PathVariable("characterId") Long characterId) {
@@ -30,20 +28,13 @@ public class CharacterController {
         return this.characterService.getCharactersById(characterId);
     }
 
-
-    //@ResponseStatus(value = HttpStatus.PROCESSING, reason = "CharacterType cannot be other than WARRIOR or WIZARD or ROGUE or ARCHER")
     @PostMapping("/createCharacter")
-    public ResponseEntity<Character> createCharacter(@RequestBody Character character) {
+    public Character create(@RequestBody Character character) {
         LOGGER.info("Character is available : " + character.getCharacterId());
-
-        if (character.getCharacterType().equalsIgnoreCase(Character_enum.WARRIOR.toString()) || character.getCharacterType().equalsIgnoreCase(Character_enum.WIZARD.toString()) ||
-                character.getCharacterType().equalsIgnoreCase(Character_enum.ARCHER.toString())  || character.getCharacterType().equalsIgnoreCase(Character_enum.ROGUE.toString())) {
-            return ResponseEntity.ok(this.characterService.createCharacter(character));
-
-        }else{
-            character.setCharacterType("CharacterType cannot be other than WARRIOR or WIZARD or ROGUE or ARCHER");
-            return ResponseEntity.badRequest().body(character);
+        if ((character.getCharacterId() != null) && (this.characterService.existsById(character.getCharacterId()))) {
+            return this.characterService.createCharacter(character);
         }
+        return this.characterService.createCharacter(character);
     }
 
     @PutMapping("/updateCharacter")
@@ -51,7 +42,7 @@ public class CharacterController {
         return this.characterService.updateCharacter(character);
     }
 
-    @PostMapping("/deleteCharacter/{characterId}")
+    @PostMapping("/delete/Character/{characterId}")
     public void deleteWithWrongMapping(@PathVariable("characterId") Long characterId) {
         this.characterService.deleteById(characterId);
     }
@@ -59,9 +50,5 @@ public class CharacterController {
     @DeleteMapping("/deleteCharacter/{characterId}")
     public void deleteCharacter(@PathVariable("characterId") Long characterId) {
         this.characterService.deleteById(characterId);
-    }
-
-    @ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "CharacterType cannot be other than WARRIOR or WIZARD or ROGUE or ARCHER")
-    public class WrongCharacterTypeException extends Exception {
     }
 }

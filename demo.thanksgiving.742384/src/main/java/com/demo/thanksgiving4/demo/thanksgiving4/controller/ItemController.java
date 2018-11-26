@@ -1,8 +1,5 @@
 package com.demo.thanksgiving4.demo.thanksgiving4.controller;
-import com.demo.thanksgiving4.demo.thanksgiving4.repository.CharacterRepository;
 import com.demo.thanksgiving4.demo.thanksgiving4.repository.ItemRepository;
-import com.demo.thanksgiving4.demo.thanksgiving4.service.CharacterService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,19 +7,12 @@ import com.demo.thanksgiving4.demo.thanksgiving4.entity.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/object")
 public class ItemController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(ItemController.class);
-
-
     public final ItemRepository itemRepository;
-
-    @Autowired
-    public final CharacterService characterService=null;
 
     public ItemController(ItemRepository itemRepository){
         this.itemRepository = itemRepository;
@@ -41,13 +31,11 @@ public class ItemController {
 
     @PostMapping ("/createItem")
     public ResponseEntity<Item> create(@RequestBody Item item) {
-        LOGGER.info("CharacterId is available : " + item.getCharacterId());
-        item.setCharacter((this.characterService.getCharactersById(item.getCharacterId())));
+       LOGGER.info("Item is available : " + item.getItemId());
         if ((item.getItemId() != null) && (this.itemRepository.existsById(item.getItemId()))){
+
             return  ResponseEntity.status(HttpStatus.OK).body(this.itemRepository.save(item));
         }
-        LOGGER.info("====================ITEM is  =====================================: " +item.toString());
-        LOGGER.info("Character ====================ITEM is  =====================================: " +item.getCharacter().toString());
         return ResponseEntity.status(HttpStatus.OK).body(this.itemRepository.save(item));
     }
 
