@@ -31,7 +31,8 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	runtimeOnly('org.springframework.boot:spring-boot-devtools')
 	runtimeOnly('org.postgresql:postgresql')
-	// compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+	compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation('org.springframework.security:spring-security-test')
+	testCompile ('com.github.tomakehurst:wiremock-standalone:2.19.0')
 }
